@@ -1,0 +1,148 @@
+/* =========================================================
+   Panel de administración — Agustín Segura Prado
+   Misma estética editorial que la web: blanco, Fraunces + Inter,
+   azul de marca. Pensado para editar TODO de forma simple.
+   ========================================================= */
+:root{
+  --bg:#ffffff; --bg-2:#f5f6f8; --surface:#eef0f3;
+  --line:#e4e6ec; --line-soft:#edeef2;
+  --text:#15171c; --muted:#565d6b; --muted-2:#6a7180;
+  --accent:#3a63c0; --accent-2:#5b86d6; --accent-dim:rgba(58,99,192,.10);
+  --ok:#1f8f5f; --danger:#c0392b;
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --font-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:10px; --rs:8px;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg-2);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.disp{font-family:var(--font-display)}
+.eye{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+
+/* ---------- botones ---------- */
+.btn{font-family:inherit;font-weight:600;font-size:.84rem;border-radius:100px;padding:.62em 1.25em;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;transition:.2s var(--ease);display:inline-flex;align-items:center;gap:.5em;line-height:1}
+.btn:hover{background:#2f539f}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.ghost{background:#fff;color:var(--text);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);background:#fff}
+.btn.sm{font-size:.76rem;padding:.45em .9em}
+.btn.danger{background:#fff;color:var(--danger);border-color:#ecc9c5}
+.btn.danger:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+.iconbtn{border:1px solid var(--line);background:#fff;border-radius:8px;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;color:var(--muted);transition:.15s}
+.iconbtn:hover{border-color:var(--accent);color:var(--accent)}
+.iconbtn:disabled{opacity:.35;cursor:default}
+
+/* ---------- LOGIN ---------- */
+.login{min-height:100vh;display:grid;place-items:center;padding:1.2rem}
+.login__card{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:38px 34px;text-align:center}
+.login__name{font-size:1.45rem;font-weight:500;line-height:1.05;margin:14px 0 4px}
+.login__name i{font-style:italic;color:var(--accent)}
+.login .field{margin-top:18px;text-align:left;position:relative}
+.login .field .ic{position:absolute;left:13px;top:38px;color:var(--muted-2);font-size:1.05rem}
+.login input{padding-left:40px}
+.login .btn{width:100%;justify-content:center;margin-top:14px}
+.login__err{color:var(--danger);font-size:.8rem;margin-top:12px;min-height:1em}
+.login__hint{color:var(--muted-2);font-size:.72rem;margin-top:16px}
+
+/* ---------- APP ---------- */
+.app{display:grid;grid-template-rows:auto 1fr;min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:11px 18px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+.brand{font-family:var(--font-display);font-weight:600;font-size:.95rem;letter-spacing:.05em;text-transform:uppercase}
+.brand b{color:var(--accent);font-weight:600}
+.topbar__actions{display:flex;align-items:center;gap:.6rem}
+.savebadge{font-size:.74rem;color:var(--muted-2);display:flex;align-items:center;gap:.4em}
+.savebadge.dirty{color:var(--accent)}
+
+.shell{display:grid;grid-template-columns:208px 1fr;align-items:start}
+.side{position:sticky;top:56px;align-self:start;background:#fff;border-right:1px solid var(--line);min-height:calc(100vh - 56px);padding:14px 12px;display:flex;flex-direction:column;gap:3px}
+.side .eye{padding:8px 12px 6px}
+.navit{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:8px;font-size:.86rem;color:var(--muted);cursor:pointer;font-weight:500;border:0;background:none;width:100%;text-align:left;font-family:inherit}
+.navit:hover{background:var(--line-soft);color:var(--text)}
+.navit.on{background:var(--accent-dim);color:var(--accent)}
+.navit .ti{font-size:1.15rem}
+.side__sep{flex:1}
+
+.main{padding:20px clamp(16px,3vw,34px) 70px;max-width:920px}
+.screen__head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:18px;flex-wrap:wrap}
+.screen__title{font-size:1.55rem;font-weight:500}
+.screen__sub{font-size:.8rem;color:var(--muted);margin-top:2px}
+
+/* ---------- formularios ---------- */
+.field{margin-bottom:16px}
+.field>label,.flabel{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:.02em}
+.field .hint{font-weight:400;color:var(--muted-2)}
+input[type=text],input[type=email],input[type=password],textarea{
+  font-family:inherit;font-size:.9rem;color:var(--text);width:100%;background:#fff;
+  border:1px solid var(--line);border-radius:var(--rs);padding:10px 12px;outline:none;transition:.15s}
+textarea{resize:vertical;min-height:74px;line-height:1.5}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.btn:focus-visible,.btn.ghost:focus-visible,.iconbtn:focus-visible,.navit:focus-visible,.langtabs button:focus-visible,.photo__bar .mini:focus-visible,.photo.add:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.langtabs{display:inline-flex;gap:3px;background:var(--bg-2);border:1px solid var(--line);border-radius:100px;padding:3px;margin-bottom:14px}
+.langtabs button{font-family:inherit;cursor:pointer;border:0;background:none;font-size:.72rem;letter-spacing:.05em;font-weight:600;color:var(--muted-2);padding:5px 13px;border-radius:100px}
+.langtabs button.on{background:#fff;color:var(--accent);box-shadow:0 1px 2px rgba(20,22,28,.06)}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+.card.active{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.card__head{display:flex;align-items:center;gap:11px;margin-bottom:4px}
+.card__head .grip{color:#c2c7d2;cursor:grab;font-size:1.15rem}
+.card__title{font-weight:600;font-size:.92rem;flex:1}
+.card__title input{font-weight:600}
+.badge{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--accent-dim);color:var(--accent);white-space:nowrap}
+
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1;min-width:180px}
+.subtle{border-top:1px solid var(--line-soft);margin:14px 0;padding-top:14px}
+
+/* ---------- rejilla de fotos ---------- */
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px;margin-top:8px}
+.photo{position:relative;aspect-ratio:1;border-radius:var(--rs);overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo.drag{outline:2px dashed var(--accent);outline-offset:-2px;opacity:.6}
+.photo__bar{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:4px;background:linear-gradient(to top,rgba(10,12,18,.7),transparent)}
+.photo__bar .mini{width:24px;height:24px;border-radius:6px;border:0;background:rgba(255,255,255,.92);color:#15171c;display:grid;place-items:center;cursor:pointer;font-size:.85rem}
+.photo__bar .mini:hover{background:#fff}
+.photo__bar .mini.del:hover{background:var(--danger);color:#fff}
+.photo .num{position:absolute;top:5px;left:5px;font-size:.6rem;background:rgba(10,12,18,.55);color:#fff;padding:2px 6px;border-radius:100px;font-variant-numeric:tabular-nums}
+.photo.add{display:grid;place-items:center;cursor:pointer;border:1.5px dashed var(--line);background:#fff;color:var(--muted-2)}
+.photo.add:hover{border-color:var(--accent);color:var(--accent)}
+.photo.add .ti{font-size:1.4rem}
+.photo.up{display:grid;place-items:center;color:var(--accent);font-size:.7rem;text-align:center;gap:4px}
+
+/* imagen única (hero / sobre mí) */
+.single{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.single__prev{width:150px;aspect-ratio:4/3;border-radius:var(--rs);overflow:hidden;border:1px solid var(--line);background:var(--surface);flex:none}
+.single__prev img{width:100%;height:100%;object-fit:cover}
+
+/* chips (servicios) */
+.chips{display:flex;flex-direction:column;gap:7px}
+.chip{display:flex;gap:7px;align-items:center}
+.chip input{flex:1}
+
+.empty{text-align:center;color:var(--muted-2);font-size:.85rem;padding:26px;border:1.5px dashed var(--line);border-radius:var(--r)}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,14px);background:var(--text);color:#fff;font-size:.82rem;padding:10px 18px;border-radius:100px;display:flex;gap:.55em;align-items:center;opacity:0;pointer-events:none;transition:.3s var(--ease);z-index:60}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.err{background:var(--danger)}
+
+/* overlay de subida */
+.busy{position:fixed;inset:0;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);display:grid;place-items:center;z-index:70}
+.busy__box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 26px;font-size:.85rem;color:var(--muted);display:flex;gap:.6em;align-items:center}
+.spin{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- responsive ---------- */
+@media(max-width:720px){
+  .shell{grid-template-columns:1fr}
+  .side{position:static;flex-direction:row;overflow-x:auto;min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:8px;gap:4px}
+  .side .eye,.side__sep{display:none}
+  .navit{white-space:nowrap;width:auto}
+  .navit span{display:inline}
+  .topbar{position:sticky}
+}

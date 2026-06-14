@@ -1,89 +1,68 @@
-# Puesta en marcha: Vercel + panel de administración
+# Panel de administración a medida
 
-El sitio es estático y **data-driven**: todo el contenido vive en `content.json`.
-El panel (`/admin`) es **Sveltia CMS**: Agustín entra, edita textos/secciones/fotos/vídeos
-con formularios y, al guardar, se hace un commit en GitHub y **Vercel republica solo**.
+La web es estática y **data-driven**: todo el contenido vive en `content.json`.
+El panel (`/admin`) es **a medida** (mismo estilo que la web). Agustín entra con una
+**contraseña** (sin GitHub, sin instalar nada), edita textos/secciones/fotos/vídeos y,
+al **Guardar**, los cambios se publican **al instante** (se guardan en Vercel Blob; la
+web los lee en vivo).
 
-Hay que hacer una configuración inicial (una vez, ~15 min). Necesitas una cuenta de
-**GitHub** y otra de **Vercel** (ambas gratis). Yo no puedo crear cuentas ni meter tus
-contraseñas; estos son los pasos:
+## Cómo funciona (resumen técnico)
 
----
+- `admin/` → el panel (HTML + CSS + JS, sin build).
+- `api/login.js` → comprueba la contraseña y entrega una cookie de sesión firmada (HMAC).
+- `api/content.js` → `GET` devuelve el contenido (Blob o, si aún no hay, el `content.json` del repo); `PUT` lo guarda (requiere sesión).
+- `api/upload.js` → sube las fotos (ya reescaladas en el navegador) a Vercel Blob.
+- `lib/session.js` → firma/verifica la sesión.
+- La web (`script.js`) lee de `/api/content` (con respaldo al `content.json` estático).
 
-## 1) Subir el proyecto a GitHub
-
-1. Crea un repositorio nuevo en https://github.com/new (privado o público), por ejemplo `portfolio-agustin`.
-2. Sube esta carpeta. Desde una terminal en la carpeta del proyecto:
-   ```bash
-   git init
-   git add .
-   git commit -m "Portfolio Agustín Segura Prado"
-   git branch -M main
-   git remote add origin https://github.com/TU_USUARIO/portfolio-agustin.git
-   git push -u origin main
-   ```
-   (O usa GitHub Desktop si prefieres botones.)
-
-## 2) Desplegar en Vercel
-
-1. Entra en https://vercel.com con tu cuenta de GitHub.
-2. **Add New… → Project → Import** el repositorio.
-3. Framework Preset: **Other**. Build command: *(vacío)*. Output dir: *(vacío / raíz)*.
-4. **Deploy**. En 1 minuto tendrás una URL tipo `https://portfolio-agustin.vercel.app`.
-5. (Opcional) Conecta tu dominio **agustinseguraprado.com** en *Settings → Domains*.
-
-## 3) Conectar el dominio en el código
-
-Pon tu dominio real (o la URL `.vercel.app`) en estos sitios y vuelve a hacer commit:
-- `admin/config.yml` → `repo: TU_USUARIO/portfolio-agustin` y `base_url: https://TU_DOMINIO`
-- Si NO usas dominio propio todavía, usa la URL `.vercel.app` en `base_url`.
-- (Opcional, SEO) Sustituye `agustinseguraprado.com` por tu dominio en `index.html`,
-  `robots.txt` y `sitemap.xml` si cambia.
-
-## 4) Crear la app OAuth de GitHub (para el login del panel)
-
-1. Ve a https://github.com/settings/developers → **OAuth Apps → New OAuth App**.
-2. Rellena:
-   - **Application name**: `Portfolio Agustín`
-   - **Homepage URL**: `https://TU_DOMINIO`
-   - **Authorization callback URL**: `https://TU_DOMINIO/api/callback`
-3. Crea la app. Copia el **Client ID** y genera un **Client Secret**.
-
-## 5) Variables de entorno en Vercel
-
-En Vercel → tu proyecto → **Settings → Environment Variables**, añade:
-- `OAUTH_GITHUB_CLIENT_ID` = (el Client ID)
-- `OAUTH_GITHUB_CLIENT_SECRET` = (el Client Secret)
-
-Vuelve a desplegar (**Deployments → Redeploy**) para que tomen efecto.
+El contenido se guarda como un blob nuevo en cada `Guardar` (y se borra el anterior),
+así **no hay caché obsoleta**: los cambios se ven al recargar.
 
 ---
 
-## Listo: cómo edita Agustín
+## Configuración en Vercel (una vez, ~5 min)
 
-1. Entra en `https://TU_DOMINIO/admin`
-2. **Iniciar sesión con GitHub** (la primera vez autoriza la app).
-3. En **Contenido → Portfolio** puede:
-   - Cambiar cualquier texto en **Español / Galego / English**.
-   - **Añadir / eliminar / reordenar secciones** (botón “Secciones”, arrastrar para ordenar).
-   - En una sección de fotos: **subir fotos** (arrastrar) y **reordenarlas**.
-   - **Añadir vídeos de YouTube a cualquier sección** (pega el ID del vídeo: lo que va
-     tras `v=` en la URL de YouTube).
-   - Cambiar la foto de portada y la de *Sobre mí*.
-4. Pulsa **Guardar / Publicar**. En ~1 minuto los cambios están online (Vercel republica).
+### 1) Crear el almacén Blob y conectarlo al proyecto
+1. En tu proyecto de Vercel → pestaña **Storage** → **Create → Blob** (ya creado: `as-portfolio-blob`).
+2. Conéctalo al proyecto `as-portfolio` (botón **Connect Project** del store, o en el asistente al crearlo).
+   Esto añade automáticamente la variable **`BLOB_READ_WRITE_TOKEN`** al proyecto. **No hay que copiarla a mano.**
+   (Si prefieres a mano: en el store, pestaña **`.env.local`** del Quickstart, copia el valor de `BLOB_READ_WRITE_TOKEN`
+   y añádelo en Settings → Environment Variables.)
 
-> Consejo: las fotos que suba se guardan en `assets/uploads/`. No hace falta indicar tamaños;
-> el sitio calcula la proporción solo.
+### 2) Variables de entorno del proyecto
+En Vercel → proyecto `as-portfolio` → **Settings → Environment Variables**, añade (en los 3 entornos):
 
-## Editar en local (opcional, sin publicar)
+| Nombre | Valor |
+|---|---|
+| `ADMIN_PASSWORD` | la contraseña que tendrá Agustín |
+| `SESSION_SECRET` | una cadena larga al azar (genera una con `openssl rand -hex 48`) |
+| `BLOB_READ_WRITE_TOKEN` | lo añade solo el paso 1 |
 
-```bash
-node server.js   # http://localhost:4321
-```
-Para probar el panel en local, Sveltia tiene “modo local”; para producción usa los pasos de arriba.
+### 3) Redeploy
+**Deployments → (último) → ⋯ → Redeploy** (sin caché). En el primer deploy Vercel instalará `@vercel/blob`.
+
+---
+
+## Cómo edita Agustín
+
+1. Entra en `https://agustinseguraprado.com/admin` (o la URL `.vercel.app/admin`).
+2. Escribe la **contraseña**.
+3. En el menú lateral:
+   - **Portada** — foto de inicio y textos (ES/GL/EN).
+   - **Secciones** — añadir/eliminar/reordenar; en galerías: subir, **reordenar (arrastrar o flechas)** y borrar fotos; añadir vídeos de YouTube.
+   - **Sobre mí** — foto, biografía y servicios.
+   - **Contacto** — el titular final.
+   - **Redes y datos** — email e Instagram/LinkedIn.
+   - **Textos web** — botones, menú y pie en cada idioma.
+4. Pulsa **Guardar cambios** (o `Ctrl/Cmd + S`). Recarga la web y ya está.
+
+> Las fotos se optimizan solas para web al subirlas (máx. 2560 px). No hay que indicar tamaños.
+
+## Local
+
+- `node server.js` → `http://localhost:4321` muestra la web (lee el `content.json` del repo; el panel necesita la API).
+- Para probar el panel y la API en local: `npm install` y luego `vercel dev`.
 
 ## Notas
-- Si un vídeo da **Error 153**, entra en YouTube Studio y activa **“Permitir insertar”**
-  y ponlo en *Público* o *No listado*.
-- Falta rellenar el **NIF** y el **domicilio** en `aviso-legal.html` y `privacidad.html`
-  (marcados como `[completar]`).
+- Si un vídeo da **Error 153**, en YouTube Studio activa **«Permitir insertar»** y ponlo en *Público*/*No listado*.
+- Falta rellenar el **NIF** y el **domicilio** en `aviso-legal.html` y `privacidad.html` (marcados como `[completar]`).

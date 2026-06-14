@@ -1,0 +1,12 @@
+{
+  "name": "asportfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio de Agustín Segura Prado + panel de administración a medida",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@vercel/blob": "2.4.0"
+  }
+}

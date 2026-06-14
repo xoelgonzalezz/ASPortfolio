@@ -17,7 +17,15 @@
   let C = null;                  // content
   const lightboxSets = {};       // por sección
   const tr = (f) => (f && (f[lang] != null ? f[lang] : f.es)) || "";
-  const ui = (k) => (C.ui[lang] && C.ui[lang][k] != null ? C.ui[lang][k] : C.ui.es[k]) || "";
+  const ui = (k) => { const u = C.ui || {}; const L = u[lang] || u.es || {}; const E = u.es || {}; return (L[k] != null ? L[k] : E[k]) || ""; };
+  function safeUrl(u) { u = String(u == null ? "" : u).trim(); return /^\s*(javascript|data|vbscript):/i.test(u) ? "#" : u; }
+  function validYt(id) { return typeof id === "string" && /^[A-Za-z0-9_-]{6,15}$/.test(id); }
+  function normalizeContent(c) {
+    c = c || {}; c.site = c.site || {}; c.hero = c.hero || {}; c.about = c.about || {}; c.contact = c.contact || {};
+    c.ui = c.ui || {}; if (!c.ui.es) c.ui.es = {}; c.about.chips = c.about.chips || {};
+    c.sections = Array.isArray(c.sections) ? c.sections : [];
+    return c;
+  }
 
   /* ---------- helpers de rutas de imagen (soporta fotos subidas por el CMS) ---------- */
   function isPath(f) { return /[\/]/.test(f); }
@@ -109,7 +117,7 @@
     }
     const wrapCls = g.feature ? "feature-video" : "reels";
     const box = el("div", wrapCls);
-    (g.videos || []).forEach((v) => box.appendChild(videoCard(v, !g.feature)));
+    (g.videos || []).filter((v) => v && validYt(v.yt)).forEach((v) => box.appendChild(videoCard(v, !g.feature)));
     grp.appendChild(box);
     return grp;
   }
@@ -166,7 +174,7 @@
     const aAbout = el("a"); aAbout.href = "#sobre-mi"; aAbout.dataset.spy = "1"; aAbout.textContent = ui("sobremi"); nv.appendChild(aAbout);
     const aC = el("a"); aC.href = "#contacto"; aC.dataset.spy = "1"; aC.textContent = ui("contacto"); nv.appendChild(aC);
     const langBox = el("div", "nav__lang"); langBox.setAttribute("role", "group"); langBox.setAttribute("aria-label", "Idioma / Language");
-    LANGS.forEach((l) => { const b = el("button"); b.type = "button"; b.dataset.lang = l; b.textContent = l.toUpperCase(); if (l === lang) b.classList.add("active"); b.addEventListener("click", () => setLang(l)); langBox.appendChild(b); });
+    LANGS.forEach((l) => { const b = el("button"); b.type = "button"; b.dataset.lang = l; b.textContent = l.toUpperCase(); b.setAttribute("aria-current", l === lang ? "true" : "false"); if (l === lang) b.classList.add("active"); b.addEventListener("click", () => setLang(l)); langBox.appendChild(b); });
     nv.appendChild(langBox);
     $$("#navLinks a").forEach((a) => a.addEventListener("click", closeMenu));
   }
@@ -187,7 +195,10 @@
     $("#heroCta2").textContent = ui("hero_cta2");
     $("#heroCaption").textContent = tr(C.hero.caption);
     const heroImg = $("#heroImg");
-    if (heroImg.getAttribute("src") !== C.hero.image) heroImg.src = C.hero.image;
+    if (heroImg.getAttribute("src") !== C.hero.image) {
+      heroImg.onerror = () => { heroImg.onerror = null; heroImg.src = "assets/full/retrato-15.jpg"; };
+      heroImg.src = C.hero.image;
+    }
 
     // secciones
     const cont = $("#sections"); cont.innerHTML = "";
@@ -201,10 +212,10 @@
     $("#aboutP1").innerHTML = tr(C.about.p1);
     $("#aboutP2").innerHTML = tr(C.about.p2);
     const chips = $("#aboutChips"); chips.innerHTML = "";
-    ((C.about.chips && C.about.chips[lang]) || C.about.chips.es || []).forEach((c) => { const li = el("li"); li.textContent = c; chips.appendChild(li); });
+    (((C.about.chips || {})[lang]) || (C.about.chips || {}).es || []).forEach((c) => { const li = el("li"); li.textContent = c; chips.appendChild(li); });
     const aImg = $("#aboutImg");
     if (aImg.getAttribute("src") !== C.about.image) {
-      aImg.onerror = () => { aImg.onerror = null; aImg.src = "assets/full/foto-fija-01.jpg"; };
+      aImg.onerror = () => { aImg.onerror = null; aImg.src = "assets/thumbs/foto-fija-01.jpg"; };
       aImg.src = C.about.image;
     }
 
@@ -214,8 +225,8 @@
     $("#contactTitle").innerHTML = tr(C.contact.title);
     const mail = $("#contactMail"); mail.href = "mailto:" + C.site.email; mail.textContent = C.site.email;
     const soc = $("#contactSocials"); soc.innerHTML = "";
-    const ig = el("a"); ig.href = C.site.instagram; ig.target = "_blank"; ig.rel = "noopener noreferrer"; ig.innerHTML = "Instagram <span>" + C.site.instagramHandle + "</span>"; soc.appendChild(ig);
-    const lk = el("a"); lk.href = C.site.linkedin; lk.target = "_blank"; lk.rel = "noopener noreferrer"; lk.innerHTML = "LinkedIn <span>" + C.site.linkedinLabel + "</span>"; soc.appendChild(lk);
+    const ig = el("a"); ig.href = safeUrl(C.site.instagram); ig.target = "_blank"; ig.rel = "noopener noreferrer"; ig.innerHTML = "Instagram <span></span>"; ig.querySelector("span").textContent = C.site.instagramHandle || ""; soc.appendChild(ig);
+    const lk = el("a"); lk.href = safeUrl(C.site.linkedin); lk.target = "_blank"; lk.rel = "noopener noreferrer"; lk.innerHTML = "LinkedIn <span></span>"; lk.querySelector("span").textContent = C.site.linkedinLabel || ""; soc.appendChild(lk);
 
     // footer
     $("#footerTag").textContent = ui("footer_tag");
@@ -317,9 +328,10 @@
   const hidePre = () => { if (pre) pre.classList.add("done"); };
 
   /* ---------- carga de contenido ---------- */
-  fetch("content.json", { cache: "no-cache" })
-    .then((r) => r.json())
-    .then((data) => { C = data; renderAll(); setTimeout(hidePre, 300); setTimeout(layoutMasonry, 500); })
+  fetch("/api/content", { cache: "no-cache" })
+    .then((r) => { if (!r.ok) throw new Error("api"); return r.json(); })
+    .catch(() => fetch("content.json", { cache: "no-cache" }).then((r) => r.json())) // respaldo: archivo estático (local sin API)
+    .then((data) => { C = normalizeContent(data); renderAll(); setTimeout(hidePre, 300); setTimeout(layoutMasonry, 500); })
     .catch((err) => {
       console.error("No se pudo cargar content.json", err);
       hidePre();

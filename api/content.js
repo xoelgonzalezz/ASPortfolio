@@ -4,31 +4,18 @@ const { getSession, sameOrigin } = require("../lib/session.js");
 const seed = require("../content.json");
 
 const PREFIX = "content/";
+// Token explícito en cada llamada: fuerza el store del BLOB_READ_WRITE_TOKEN y evita
+// que el SDK resuelva el store por OIDC / store conectado al proyecto (que es el privado).
+const TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
 
 module.exports = async (req, res) => {
   const J = (c, o) => { res.statusCode = c; res.setHeader("Content-Type", "application/json"); res.end(JSON.stringify(o)); };
 
   if (req.method === "GET") {
     res.setHeader("Cache-Control", "no-store");
-    if (req.query && req.query.__diag === "1") {
-      const crypto = require("crypto");
-      const tok = process.env.BLOB_READ_WRITE_TOKEN || "";
-      const out = { storePrefix: (tok.match(/vercel_blob_rw_[A-Za-z0-9]+/) || ["NONE"])[0], tokenLen: tok.length, tokHash: crypto.createHash("sha256").update(tok).digest("hex").slice(0, 12), blobLoaded: false, selfPut: null, listCount: null, selfFetch: null, derr: null };
-      try {
-        const { put, list, del } = await import("@vercel/blob");
-        out.blobLoaded = true;
-        const b = await put(PREFIX + "__diagtest.json", "{}", { access: "public", addRandomSuffix: true, contentType: "application/json" });
-        out.selfPut = "ok";
-        const { blobs } = await list({ prefix: PREFIX });
-        out.listCount = (blobs || []).length;
-        const rr = await fetch(b.url, { cache: "no-store" }); out.selfFetch = rr.status;
-        await del(b.url);
-      } catch (e) { out.derr = String((e && e.message) || e); }
-      return J(200, out);
-    }
     try {
       const { list } = await import("@vercel/blob");
-      const { blobs } = await list({ prefix: PREFIX });
+      const { blobs } = await list({ prefix: PREFIX, token: TOKEN });
       if (!blobs || !blobs.length) return J(200, seed);
       blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
       const r = await fetch(blobs[0].url, { cache: "no-store" });
@@ -36,7 +23,6 @@ module.exports = async (req, res) => {
       const data = await r.json();
       return J(200, data);
     } catch (e) {
-      // Blob no configurado todavía o error puntual -> servimos el contenido inicial del repo
       console.error("content GET: fallback al seed:", e && e.message);
       return J(200, seed);
     }
@@ -60,12 +46,12 @@ module.exports = async (req, res) => {
         access: "public",
         addRandomSuffix: true,
         contentType: "application/json",
+        token: TOKEN,
       });
-      // limpieza de versiones anteriores (deja solo la recién creada)
       try {
-        const { blobs } = await list({ prefix: PREFIX });
+        const { blobs } = await list({ prefix: PREFIX, token: TOKEN });
         const old = (blobs || []).filter((b) => b.url !== blob.url).map((b) => b.url);
-        if (old.length) await del(old);
+        if (old.length) await del(old, { token: TOKEN });
       } catch (e) { /* la limpieza no es crítica */ }
       return J(200, { ok: true });
     } catch (e) {

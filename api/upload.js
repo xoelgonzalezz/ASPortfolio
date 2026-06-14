@@ -1,6 +1,7 @@
 // POST /api/upload  { dataUrl, filename }  -> sube la foto al Blob y devuelve { url }. Requiere sesión.
 // La imagen llega ya reescalada desde el navegador como data URL (base64), bien por debajo del límite de 4.5 MB.
 const { getSession, sameOrigin } = require("../lib/session.js");
+const TOKEN = process.env.BLOB_READ_WRITE_TOKEN; // explícito: fuerza el store público (evita OIDC/store conectado)
 
 module.exports = async (req, res) => {
   const J = (c, o) => { res.statusCode = c; res.setHeader("Content-Type", "application/json"); res.end(JSON.stringify(o)); };
@@ -36,6 +37,7 @@ module.exports = async (req, res) => {
       access: "public",
       addRandomSuffix: true,
       contentType,
+      token: TOKEN,
     });
     return J(200, { url: blob.url });
   } catch (e) {

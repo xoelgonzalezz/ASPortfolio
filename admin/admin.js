@@ -83,9 +83,16 @@
   async function apiJSON(url, method, body) {
     var opt = { method: method || "GET", headers: {}, credentials: "same-origin" };
     if (body !== undefined) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
-    var r = await fetch(url, opt);
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    if (ctrl) opt.signal = ctrl.signal;
+    var to = ctrl ? setTimeout(function () { ctrl.abort(); }, 90000) : null;
+    var r;
+    try { r = await fetch(url, opt); }
+    catch (e) { if (to) clearTimeout(to); throw new Error(ctrl && ctrl.signal.aborted ? "La conexión tardó demasiado. Inténtalo de nuevo." : (e.message || "Error de red")); }
+    if (to) clearTimeout(to);
     var j = {}; try { j = await r.json(); } catch (e) {}
     if (r.status === 401) { if (url.indexOf("/api/login") < 0) showLogin(); throw new Error(j.error || "Sesión caducada"); }
+    if (r.status === 413) throw new Error("La foto pesa demasiado para subirla. Prueba con una un poco más ligera.");
     if (!r.ok) throw new Error(j.error || "Error " + r.status);
     return j;
   }
@@ -126,10 +133,12 @@
             w = Math.round(w * s); ht = Math.round(ht * s);
             var c = document.createElement("canvas"); c.width = w; c.height = ht;
             c.getContext("2d").drawImage(img, 0, 0, w, ht);
-            // Mantiene la resolución (2560px); baja solo la CALIDAD si hace falta para no
-            // superar el límite de ~4,5 MB del cuerpo de petición de Vercel (imperceptible en web).
-            // Blob binario a calidad completa (sin base64): se sube directo al Blob, sin límite de tamaño.
-            c.toBlob(function (b) { if (b) res(b); else rej(new Error("No se pudo procesar la imagen.")); }, "image/jpeg", 0.85);
+            // Mantiene la resolución (2560px) a calidad alta (0.85). Solo si la foto fuese
+            // excepcionalmente pesada baja un poco la calidad (imperceptible en web) para quedar
+            // bajo el límite de 4,5 MB del cuerpo de petición de Vercel y no fallar nunca.
+            var q = 0.85, url = c.toDataURL("image/jpeg", q);
+            while (url.length > 4000000 && q > 0.4) { q -= 0.08; url = c.toDataURL("image/jpeg", q); }
+            res(url);
           } catch (e) { rej(new Error("No se pudo procesar la imagen.")); }
         };
         img.onerror = function () { fail("Formato no compatible. Usa JPG o PNG. (Las fotos HEIC del iPhone hay que exportarlas como JPG primero.)"); };
@@ -147,11 +156,9 @@
       if (!f) return;
       try {
         busy(true, "Procesando foto…");
-        var blob = await downscale(f);
+        var dataUrl = await downscale(f);
         busy(true, "Subiendo…");
-        var mod = await import("https://esm.sh/@vercel/blob@2.4.0/client");
-        var base = String(f.name || "foto").replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 40) || "foto";
-        var result = await mod.upload("fotos/" + base + ".jpg", blob, { access: "public", handleUploadUrl: "/api/upload", contentType: "image/jpeg" });
+        var result = await apiJSON("/api/upload", "POST", { dataUrl: dataUrl, filename: f.name });
         cb(result.url);
       } catch (e) { toast(e.message || "No se pudo subir la foto", "err"); }
       finally { busy(false); }

@@ -1,39 +1,48 @@
-// POST /api/upload — subida de fotos mediante "client upload" de Vercel Blob.
-// La foto va DIRECTA del navegador a Vercel Blob (no pasa por esta función), así que NO le
-// afecta el límite de 4,5 MB del cuerpo de petición: sube a calidad completa, sin comprimir extra.
-// Esta ruta solo: (1) firma un token de subida tras autenticar al editor, y
-// (2) recibe el aviso de "subida completada" de Vercel (verificado por firma).
-const { getSession } = require("../lib/session.js");
+// POST /api/upload  { dataUrl, filename }  -> sube la foto al Blob y devuelve { url }. Requiere sesión.
+// La foto llega ya reescalada (2560px) desde el navegador como data URL; al pesar ~1-2 MB queda
+// holgadamente por debajo del límite de 4,5 MB del cuerpo de petición de Vercel. Fiable y sin CDNs externos.
+const { getSession, sameOrigin } = require("../lib/session.js");
 const TOKEN = process.env.BLOB_READ_WRITE_TOKEN; // store público; explícito para no caer en OIDC/store conectado
 
 module.exports = async (req, res) => {
   const J = (c, o) => { res.statusCode = c; res.setHeader("Content-Type", "application/json"); res.end(JSON.stringify(o)); };
   if (req.method !== "POST") return J(405, { error: "Método no permitido" });
+  if (!sameOrigin(req)) return J(403, { error: "Origen no permitido" });
+  if (!getSession(req)) return J(401, { error: "No autorizado" });
 
   let body = req.body;
   if (typeof body === "string") { try { body = JSON.parse(body); } catch (e) { return J(400, { error: "JSON inválido" }); } }
+  const dataUrl = body && body.dataUrl;
+  if (!dataUrl || typeof dataUrl !== "string") return J(400, { error: "Falta la imagen" });
+
+  const m = dataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+  if (!m) return J(400, { error: "Formato de imagen no válido" });
+  const contentType = m[1];
+  const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+  if (ALLOWED.indexOf(contentType) < 0) return J(415, { error: "Tipo no permitido (usa JPG, PNG, WEBP o GIF)" });
+  if (m[2].length > 6 * 1024 * 1024) return J(413, { error: "Imagen demasiado grande" });
+  const buf = Buffer.from(m[2], "base64");
+  if (!buf.length) return J(400, { error: "Imagen vacía" });
+
+  const ext = (contentType.split("/")[1] || "jpg").replace("jpeg", "jpg");
+  const base =
+    String(body.filename || "foto")
+      .replace(/\.[^.]+$/, "")
+      .replace(/[^a-zA-Z0-9_-]/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 40) || "foto";
 
   try {
-    const { handleUpload } = await import("@vercel/blob/client");
-    const result = await handleUpload({
+    const { put } = await import("@vercel/blob");
+    const blob = await put("fotos/" + base + "." + ext, buf, {
+      access: "public",
+      addRandomSuffix: true,
+      contentType: contentType,
       token: TOKEN,
-      body: body,
-      request: req,
-      onBeforeGenerateToken: async function () {
-        // Solo el editor con sesión válida puede pedir un token de subida.
-        if (!getSession(req)) throw new Error("No autorizado");
-        return {
-          allowedContentTypes: ["image/jpeg", "image/png", "image/webp", "image/gif"],
-          addRandomSuffix: true,
-          maximumSizeInBytes: 30 * 1024 * 1024,
-        };
-      },
-      onUploadCompleted: async function () { /* el panel guarda la URL en content.json al Guardar */ },
     });
-    return J(200, result);
+    return J(200, { url: blob.url });
   } catch (e) {
-    console.error("upload error:", e && e.message);
-    // 400 para que el webhook de Vercel reintente si fuese un fallo transitorio del callback.
-    return J(400, { error: (e && e.message) || "No se pudo subir la imagen" });
+    console.error("upload error", e);
+    return J(500, { error: "No se pudo subir la imagen" });
   }
 };

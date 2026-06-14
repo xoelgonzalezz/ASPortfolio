@@ -139,7 +139,7 @@ body.has-logo .preloader__name{ display:none; }
 .nav__scrim.show{ opacity:1; visibility:visible; }
 
 /* ---------- Hero (foto a media pantalla, sin líneas) ---------- */
-.hero{ position:relative; min-height:100vh; min-height:100svh;
+.hero{ position:relative; min-height:600px; min-height:min(100svh, 720px);
   display:grid; grid-template-columns:1fr 1fr; align-items:stretch; }
 .hero__text{ align-self:center; justify-self:end; width:100%; max-width:660px;
   padding:clamp(7rem,15vh,9rem) clamp(2rem,4vw,3.5rem) clamp(4rem,8vh,6rem) max(var(--pad-x),env(safe-area-inset-left)); }

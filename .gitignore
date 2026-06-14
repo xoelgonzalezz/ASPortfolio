@@ -23,3 +23,5 @@ assets/1756418167268.jpg
 # herramientas de Claude (no son del sitio)
 .claude/
 make-icons.ps1
+
+.vercel

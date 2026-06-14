@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Agustín Segura Prado — Comunicador audiovisual y fotógrafo</title>
+<meta name="description" content="Portfolio de Agustín Segura Prado, comunicador audiovisual y fotógrafo afincado en Galicia. Fotografía de concierto, eventos, retrato, foto fija y producción de vídeo." />
+<meta name="author" content="Agustín Segura Prado" />
+<meta name="theme-color" content="#ffffff" />
+<link rel="canonical" href="https://agustinseguraprado.com/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Agustín Segura Prado" />
+<meta property="og:title" content="Agustín Segura Prado — Comunicador audiovisual y fotógrafo" />
+<meta property="og:description" content="Comunicación audiovisual y fotografía profesional desde Galicia: vídeo, conciertos, eventos, retrato y foto fija para marcas, artistas y productoras." />
+<meta property="og:url" content="https://agustinseguraprado.com/" />
+<meta property="og:image" content="https://agustinseguraprado.com/assets/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Agustín Segura Prado — comunicador audiovisual y fotógrafo en Galicia" />
+<meta property="og:locale" content="es_ES" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Agustín Segura Prado — Comunicador audiovisual y fotógrafo" />
+<meta name="twitter:description" content="Fotografía y vídeo desde Galicia: conciertos, eventos, retrato, foto fija y producción audiovisual." />
+<meta name="twitter:image" content="https://agustinseguraprado.com/assets/og-cover.jpg" />
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=4" />
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png?v=4" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=4" />
+<link rel="manifest" href="manifest.webmanifest" />
+
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Fraunces-300_900-normal-latin-12.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Inter-400-normal-latin-2.woff2" crossorigin />
+<link rel="stylesheet" href="fonts.css" />
+<link rel="stylesheet" href="styles.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "Person", "@id": "https://agustinseguraprado.com/#agustin", "name": "Agustín Segura Prado", "alternateName": "soy.tin", "jobTitle": "Comunicador audiovisual y fotógrafo", "url": "https://agustinseguraprado.com/", "image": "https://agustinseguraprado.com/assets/og-cover.jpg", "email": "agustinseguraprado@gmail.com", "address": { "@type": "PostalAddress", "addressRegion": "Galicia", "addressCountry": "ES" }, "sameAs": ["https://www.instagram.com/soy.tin","https://www.linkedin.com/in/agust%C3%ADn-segura-prado-5b15282a0"] },
+    { "@type": "ProfessionalService", "@id": "https://agustinseguraprado.com/#servicio", "name": "Agustín Segura Prado — Audiovisual y Fotografía", "image": "https://agustinseguraprado.com/assets/og-cover.jpg", "url": "https://agustinseguraprado.com/", "email": "agustinseguraprado@gmail.com", "areaServed": { "@type": "AdministrativeArea", "name": "Galicia" }, "address": { "@type": "PostalAddress", "addressRegion": "Galicia", "addressCountry": "ES" }, "priceRange": "$$", "sameAs": ["https://www.instagram.com/soy.tin","https://www.linkedin.com/in/agust%C3%ADn-segura-prado-5b15282a0"] }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a href="#contenido" class="skip-link" id="skipLink">Saltar al contenido</a>
+
+<div class="preloader" id="preloader" aria-hidden="true">
+  <img class="preloader__logo" src="assets/caballito.png" alt="" />
+  <div class="preloader__name"><span>Agustín</span><span>Segura</span><span>Prado</span></div>
+</div>
+
+<header class="nav" id="nav">
+  <a href="#inicio" class="nav__brand" aria-label="Inicio — Agustín Segura Prado">
+    <img class="nav__logo" src="assets/caballito.png" alt="" />
+    <span class="nav__name">Agustín <span class="nav__name-accent">Segura</span> Prado</span>
+  </a>
+  <nav class="nav__links" id="navLinks" aria-label="Navegación principal"></nav>
+  <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<div class="nav__scrim" id="navScrim" hidden></div>
+
+<main id="contenido">
+  <section class="hero" id="inicio">
+    <div class="hero__text">
+      <p class="eyebrow reveal" id="heroEyebrow"></p>
+      <h1 class="hero__title reveal"><span>Agustín</span><span class="hero__title-accent">Segura</span><span>Prado</span></h1>
+      <p class="hero__lede reveal" id="heroLede"></p>
+      <div class="hero__actions reveal">
+        <a href="#audiovisual" class="btn btn--primary" id="heroCta1"></a>
+        <a href="#contacto" class="btn btn--ghost" id="heroCta2"></a>
+      </div>
+    </div>
+    <div class="hero__media">
+      <img id="heroImg" alt="Retrato de Agustín Segura Prado" fetchpriority="high" decoding="async" />
+      <span class="hero__caption" id="heroCaption"></span>
+    </div>
+  </section>
+
+  <div id="sections"></div>
+
+  <section class="section about" id="sobre-mi">
+    <div class="about__inner">
+      <div class="about__media reveal"><img id="aboutImg" alt="Retrato de Agustín Segura Prado" loading="lazy" decoding="async" /></div>
+      <div class="about__text reveal">
+        <p class="eyebrow"><span class="eyebrow__num" id="aboutNum"></span> <span id="aboutNav"></span></p>
+        <h2 class="section__title" id="aboutTitle"></h2>
+        <p id="aboutP1"></p>
+        <p id="aboutP2"></p>
+        <ul class="chips" id="aboutChips"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contacto">
+    <div class="contact__inner reveal">
+      <p class="eyebrow"><span class="eyebrow__num" id="contactNum"></span> <span id="contactNav"></span></p>
+      <h2 class="contact__title" id="contactTitle"></h2>
+      <a href="#" class="contact__mail" id="contactMail"></a>
+      <div class="contact__socials" id="contactSocials"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <img class="nav__logo" src="assets/caballito.png" alt="" />
+      <span>Agustín <span class="nav__name-accent">Segura</span> Prado</span>
+    </div>
+    <p class="footer__tag" id="footerTag"></p>
+    <a href="#inicio" class="footer__top" id="footerTop"></a>
+  </div>
+  <p class="footer__copy">© <span id="year"></span> Agustín Segura Prado. <span id="footerRights"></span></p>
+  <nav class="footer__legal" aria-label="Enlaces legales">
+    <a href="aviso-legal.html" id="legal1"></a> · <a href="privacidad.html" id="legal2"></a>
+  </nav>
+</footer>
+
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visor de imagen">
+  <button class="lightbox__btn lightbox__close" id="lbClose" aria-label="Cerrar (Esc)">&times;</button>
+  <button class="lightbox__btn lightbox__prev" id="lbPrev" aria-label="Imagen anterior">&#8249;</button>
+  <button class="lightbox__btn lightbox__next" id="lbNext" aria-label="Imagen siguiente">&#8250;</button>
+  <figure class="lightbox__stage">
+    <div class="lightbox__imgwrap">
+      <span class="lightbox__spinner" id="lbSpinner" aria-hidden="true"></span>
+      <img class="lightbox__img" id="lbImg" alt="" />
+    </div>
+    <figcaption class="lightbox__cap" role="status" aria-live="polite"><span id="lbCat"></span><span id="lbCount"></span></figcaption>
+  </figure>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

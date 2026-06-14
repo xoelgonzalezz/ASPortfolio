@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Aviso legal — Agustín Segura Prado</title>
+<meta name="theme-color" content="#ffffff" />
+<meta name="robots" content="noindex" />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="stylesheet" href="fonts.css" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .legal{ max-width:760px; margin-inline:auto; padding:clamp(3rem,8vh,5rem) var(--pad-x) 5rem; }
+  .legal__top{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+  .legal .back{ font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .legal .back:hover{ color:var(--accent); }
+  .legal h1{ font-family:var(--font-display); font-weight:500; font-size:clamp(2rem,6vw,3.2rem); line-height:1.05; margin-bottom:1.5rem; }
+  .legal h2{ font-family:var(--font-display); font-weight:500; font-size:1.3rem; margin:2.2rem 0 .8rem; }
+  .legal p,.legal li{ color:var(--muted); margin-bottom:1rem; }
+  .legal ul{ padding-left:1.1rem; }
+  .legal a.inl{ color:var(--accent); }
+  .legal .ph{ color:var(--accent); }
+</style>
+</head>
+<body>
+<main class="legal">
+  <div class="legal__top">
+    <a class="back" href="/" data-i18n="back">← Volver al portfolio</a>
+    <div class="nav__lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" class="active">ES</button>
+      <button type="button" data-lang="gl">GL</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <h1 data-i18n="h1">Aviso legal</h1>
+
+  <h2 data-i18n="t.h">Titular del sitio</h2>
+  <p data-i18n="t.intro">En cumplimiento del artículo 10 de la Ley 34/2002 (LSSI-CE), se informan los datos del titular:</p>
+  <ul>
+    <li><strong data-i18n="t.owner">Titular:</strong> Agustín Segura Prado</li>
+    <li><strong>NIF:</strong> <span class="ph">[completar]</span></li>
+    <li><strong data-i18n="t.addr">Domicilio:</strong> <span class="ph">[completar]</span> (Galicia, España)</li>
+    <li><strong data-i18n="t.email">Correo:</strong> <a class="inl" href="mailto:agustinseguraprado@gmail.com">agustinseguraprado@gmail.com</a></li>
+    <li><strong data-i18n="t.act">Actividad:</strong> <span data-i18n="t.act.v">servicios de comunicación audiovisual y fotografía.</span></li>
+  </ul>
+
+  <h2 data-i18n="o.h">Objeto</h2>
+  <p data-i18n="o.p">Este sitio tiene carácter informativo y de presentación del trabajo profesional de su titular. El acceso y la navegación implican la aceptación de las condiciones de este aviso.</p>
+
+  <h2 data-i18n="ip.h">Propiedad intelectual</h2>
+  <p data-i18n="ip.p">Todas las fotografías, vídeos, textos y demás contenidos son propiedad de Agustín Segura Prado o de sus respectivos titulares y están protegidos por la normativa de propiedad intelectual. Queda prohibida su reproducción, distribución o uso sin autorización expresa.</p>
+
+  <h2 data-i18n="r.h">Responsabilidad</h2>
+  <p data-i18n="r.p">El titular no se responsabiliza del uso indebido de los contenidos ni de los daños derivados del acceso al sitio. Los enlaces a terceros (Instagram, LinkedIn, YouTube) se ofrecen por comodidad; su contenido es responsabilidad de dichas plataformas.</p>
+
+  <h2 data-i18n="l.h">Legislación aplicable</h2>
+  <p data-i18n="l.p">Este aviso se rige por la legislación española y serán competentes los juzgados y tribunales que correspondan conforme a derecho.</p>
+
+  <p style="margin-top:2.5rem"><a class="inl" href="privacidad.html" data-i18n="toPriv">Política de privacidad →</a></p>
+</main>
+
+<script>
+(function(){
+  var L={
+    es:{ "back":"← Volver al portfolio","h1":"Aviso legal","t.h":"Titular del sitio",
+      "t.intro":"En cumplimiento del artículo 10 de la Ley 34/2002 (LSSI-CE), se informan los datos del titular:",
+      "t.owner":"Titular:","t.addr":"Domicilio:","t.email":"Correo:","t.act":"Actividad:","t.act.v":"servicios de comunicación audiovisual y fotografía.",
+      "o.h":"Objeto","o.p":"Este sitio tiene carácter informativo y de presentación del trabajo profesional de su titular. El acceso y la navegación implican la aceptación de las condiciones de este aviso.",
+      "ip.h":"Propiedad intelectual","ip.p":"Todas las fotografías, vídeos, textos y demás contenidos son propiedad de Agustín Segura Prado o de sus respectivos titulares y están protegidos por la normativa de propiedad intelectual. Queda prohibida su reproducción, distribución o uso sin autorización expresa.",
+      "r.h":"Responsabilidad","r.p":"El titular no se responsabiliza del uso indebido de los contenidos ni de los daños derivados del acceso al sitio. Los enlaces a terceros (Instagram, LinkedIn, YouTube) se ofrecen por comodidad; su contenido es responsabilidad de dichas plataformas.",
+      "l.h":"Legislación aplicable","l.p":"Este aviso se rige por la legislación española y serán competentes los juzgados y tribunales que correspondan conforme a derecho.",
+      "toPriv":"Política de privacidad →" },
+    gl:{ "back":"← Volver ao portfolio","h1":"Aviso legal","t.h":"Titular do sitio",
+      "t.intro":"En cumprimento do artigo 10 da Lei 34/2002 (LSSI-CE), infórmanse os datos do titular:",
+      "t.owner":"Titular:","t.addr":"Domicilio:","t.email":"Correo:","t.act":"Actividade:","t.act.v":"servizos de comunicación audiovisual e fotografía.",
+      "o.h":"Obxecto","o.p":"Este sitio ten carácter informativo e de presentación do traballo profesional do seu titular. O acceso e a navegación implican a aceptación das condicións deste aviso.",
+      "ip.h":"Propiedade intelectual","ip.p":"Todas as fotografías, vídeos, textos e demais contidos son propiedade de Agustín Segura Prado ou dos seus respectivos titulares e están protexidos pola normativa de propiedade intelectual. Queda prohibida a súa reprodución, distribución ou uso sen autorización expresa.",
+      "r.h":"Responsabilidade","r.p":"O titular non se responsabiliza do uso indebido dos contidos nin dos danos derivados do acceso ao sitio. As ligazóns a terceiros (Instagram, LinkedIn, YouTube) ofrécense por comodidade; o seu contido é responsabilidade desas plataformas.",
+      "l.h":"Lexislación aplicable","l.p":"Este aviso réxese pola lexislación española e serán competentes os xulgados e tribunais que correspondan conforme a dereito.",
+      "toPriv":"Política de privacidade →" },
+    en:{ "back":"← Back to the portfolio","h1":"Legal notice","t.h":"Site owner",
+      "t.intro":"In accordance with article 10 of Spanish Law 34/2002 (LSSI-CE), the owner's details are provided:",
+      "t.owner":"Owner:","t.addr":"Address:","t.email":"Email:","t.act":"Activity:","t.act.v":"audiovisual communication and photography services.",
+      "o.h":"Purpose","o.p":"This site is informational and presents the professional work of its owner. Accessing and browsing it implies acceptance of the terms of this notice.",
+      "ip.h":"Intellectual property","ip.p":"All photographs, videos, texts and other content are the property of Agustín Segura Prado or their respective owners and are protected by intellectual property law. Their reproduction, distribution or use without express authorisation is prohibited.",
+      "r.h":"Liability","r.p":"The owner is not liable for misuse of the content or for damages arising from access to the site. Links to third parties (Instagram, LinkedIn, YouTube) are provided for convenience; their content is the responsibility of those platforms.",
+      "l.h":"Applicable law","l.p":"This notice is governed by Spanish law and the competent courts shall be those determined by law.",
+      "toPriv":"Privacy policy →" }
+  };
+  var lang="es"; try{var s=localStorage.getItem("asp_lang"); if(s&&L[s])lang=s;}catch(e){}
+  function apply(){
+    document.documentElement.lang=lang;
+    document.querySelectorAll("[data-i18n]").forEach(function(el){ var v=(L[lang]||{})[el.getAttribute("data-i18n")]; if(v!=null) el.textContent=v; });
+    document.querySelectorAll(".nav__lang button").forEach(function(b){ b.classList.toggle("active", b.dataset.lang===lang); });
+  }
+  document.querySelectorAll(".nav__lang button").forEach(function(b){ b.addEventListener("click", function(){ lang=b.dataset.lang; try{localStorage.setItem("asp_lang",lang);}catch(e){} apply(); }); });
+  apply();
+})();
+</script>
+</body>
+</html>

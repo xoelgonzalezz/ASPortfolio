@@ -1,0 +1,142 @@
+{
+  "site": {
+    "name": "Agustín Segura Prado",
+    "email": "agustinseguraprado@gmail.com",
+    "instagram": "https://www.instagram.com/soy.tin",
+    "instagramHandle": "@soy.tin",
+    "linkedin": "https://www.linkedin.com/in/agust%C3%ADn-segura-prado-5b15282a0",
+    "linkedinLabel": "Agustín Segura Prado"
+  },
+  "ui": {
+    "es": {
+      "skip": "Saltar al contenido", "sobremi": "Sobre mí", "contacto": "Contacto",
+      "hero_cta1": "Ver portfolio", "hero_cta2": "Trabajemos juntos",
+      "footer_tag": "Comunicador audiovisual y fotógrafo · Galicia", "footer_top": "↑ Arriba",
+      "footer_rights": "Todos los derechos reservados.", "legal1": "Aviso legal", "legal2": "Privacidad",
+      "video_fallback": "Si no carga, ábrelo en YouTube ↗", "video_notice": "Al pulsar se carga YouTube (cookies de Google)."
+    },
+    "gl": {
+      "skip": "Ir ao contido", "sobremi": "Sobre min", "contacto": "Contacto",
+      "hero_cta1": "Ver portfolio", "hero_cta2": "Traballemos xuntos",
+      "footer_tag": "Comunicador audiovisual e fotógrafo · Galicia", "footer_top": "↑ Arriba",
+      "footer_rights": "Todos os dereitos reservados.", "legal1": "Aviso legal", "legal2": "Privacidade",
+      "video_fallback": "Se non carga, ábreo en YouTube ↗", "video_notice": "Ao premer cárgase YouTube (cookies de Google)."
+    },
+    "en": {
+      "skip": "Skip to content", "sobremi": "About", "contacto": "Contact",
+      "hero_cta1": "View portfolio", "hero_cta2": "Let's work together",
+      "footer_tag": "Audiovisual communicator & photographer · Galicia", "footer_top": "↑ Top",
+      "footer_rights": "All rights reserved.", "legal1": "Legal notice", "legal2": "Privacy",
+      "video_fallback": "If it doesn't load, open it on YouTube ↗", "video_notice": "Playing loads YouTube (Google cookies)."
+    }
+  },
+  "hero": {
+    "eyebrow": { "es": "Comunicador audiovisual · Galicia", "gl": "Comunicador audiovisual · Galicia", "en": "Audiovisual communicator · Galicia" },
+    "lede": {
+      "es": "Comunicación audiovisual y fotografía para marcas, artistas y productoras. Del pulso de un directo a la calma de un retrato: imágenes con intención.",
+      "gl": "Comunicación audiovisual e fotografía para marcas, artistas e produtoras. Do pulso dun directo á calma dun retrato: imaxes con intención.",
+      "en": "Audiovisual communication and photography for brands, artists and production companies. From the pulse of a live show to the calm of a portrait — images with intent."
+    },
+    "image": "assets/full/retrato-15.jpg",
+    "caption": { "es": "Retrato · 35mm", "gl": "Retrato · 35mm", "en": "Portrait · 35mm" }
+  },
+  "sections": [
+    {
+      "id": "audiovisual", "type": "video",
+      "nav": { "es": "Audiovisual", "gl": "Audiovisual", "en": "Audiovisual" },
+      "title": { "es": "Grabación, dirección <i>y montaje</i>", "gl": "Gravación, dirección <i>e montaxe</i>", "en": "Shooting, direction <i>& editing</i>" },
+      "desc": {
+        "es": "Piezas pensadas para emocionar y comunicar: reels para redes, vídeos de marca y piezas para artistas. La luz, el ritmo y el montaje al servicio del mensaje.",
+        "gl": "Pezas pensadas para emocionar e comunicar: reels para redes, vídeos de marca e pezas para artistas. A luz, o ritmo e a montaxe ao servizo da mensaxe.",
+        "en": "Pieces made to move and communicate: social reels, brand videos and films for artists. Light, rhythm and editing at the service of the message."
+      },
+      "groups": [
+        {
+          "title": { "es": "Reels para redes sociales", "gl": "Reels para redes sociais", "en": "Reels for social media" },
+          "meta": { "es": "FAXPG · 2025 — Grabación y montaje", "gl": "FAXPG · 2025 — Gravación e montaxe", "en": "FAXPG · 2025 — Shooting & editing" },
+          "videos": [
+            { "yt": "NEq346d_vL4", "title": "Reel FAXPG 1" },
+            { "yt": "C58kjFE2EZU", "title": "Reel FAXPG 2" },
+            { "yt": "P8N9I31EIJ0", "title": "Reel FAXPG 3" }
+          ]
+        },
+        {
+          "title": { "es": "Arrolo", "gl": "Arrolo", "en": "Arrolo" },
+          "meta": { "es": "FAXPG · 2025 — Grabación y montaje", "gl": "FAXPG · 2025 — Gravación e montaxe", "en": "FAXPG · 2025 — Shooting & editing" },
+          "feature": true,
+          "videos": [ { "yt": "U-DypDmQJ-0", "title": "Arrolo" } ]
+        }
+      ]
+    },
+    {
+      "id": "foto-fija", "type": "gallery",
+      "nav": { "es": "Foto fija", "gl": "Foto fixa", "en": "Stills" },
+      "title": { "es": "Imagen conceptual <i>&amp; dirección de arte</i>", "gl": "Imaxe conceptual <i>&amp; dirección de arte</i>", "en": "Conceptual imagery <i>&amp; art direction</i>" },
+      "desc": {
+        "es": "Fotogramas detenidos: luz cinematográfica, color y atmósfera. Imágenes fijas para rodajes, campañas y proyectos de marca con estética de cine.",
+        "gl": "Fotogramas detidos: luz cinematográfica, cor e atmosfera. Imaxes fixas para rodaxes, campañas e proxectos de marca con estética de cine.",
+        "en": "Frozen frames: cinematic light, colour and atmosphere. Still images for shoots, campaigns and brand projects with a film aesthetic."
+      },
+      "photos": ["foto-fija-01.jpg","foto-fija-02.jpg","foto-fija-03.jpg","foto-fija-04.jpg","foto-fija-05.jpg","foto-fija-06.jpg","foto-fija-07.jpg"]
+    },
+    {
+      "id": "conciertos", "type": "gallery",
+      "nav": { "es": "Conciertos", "gl": "Concertos", "en": "Concerts" },
+      "title": { "es": "Directos <i>&amp; música en vivo</i>", "gl": "Directos <i>&amp; música en vivo</i>", "en": "Live shows <i>&amp; music</i>" },
+      "desc": {
+        "es": "La energía del escenario congelada: foco, sudor y movimiento. Cobertura fotográfica de directos para artistas, salas y promotoras.",
+        "gl": "A enerxía do escenario conxelada: foco, suor e movemento. Cobertura fotográfica de directos para artistas, salas e promotoras.",
+        "en": "The energy of the stage, frozen: spotlight, sweat and movement. Concert photography for artists, venues and promoters."
+      },
+      "photos": ["conciertos-01.jpg","conciertos-02.jpg","conciertos-03.jpg","conciertos-04.jpg","conciertos-05.jpg","conciertos-06.jpg","conciertos-07.jpg","conciertos-08.jpg"]
+    },
+    {
+      "id": "eventos", "type": "gallery",
+      "nav": { "es": "Eventos", "gl": "Eventos", "en": "Events" },
+      "title": { "es": "Reportaje <i>&amp; cobertura</i>", "gl": "Reportaxe <i>&amp; cobertura</i>", "en": "Reportage <i>&amp; coverage</i>" },
+      "desc": {
+        "es": "Personas, causas y momentos. Reportaje y cobertura de eventos, jornadas y actos, documentados con mirada y respeto.",
+        "gl": "Persoas, causas e momentos. Reportaxe e cobertura de eventos, xornadas e actos, documentados con mirada e respecto.",
+        "en": "People, causes and moments. Reportage and coverage of events and gatherings, documented with care and respect."
+      },
+      "photos": ["eventos-01.jpg","eventos-02.jpg","eventos-03.jpg","eventos-04.jpg","eventos-05.jpg"]
+    },
+    {
+      "id": "retrato", "type": "gallery",
+      "nav": { "es": "Retrato", "gl": "Retrato", "en": "Portrait" },
+      "title": { "es": "Retrato <i>de estudio y autor</i>", "gl": "Retrato <i>de estudo e autor</i>", "en": "Portrait <i>— studio &amp; author</i>" },
+      "desc": {
+        "es": "El rostro como paisaje: blanco y negro, forma y silencio. Retrato de estudio y de autor para artistas, profesionales y proyectos personales.",
+        "gl": "O rostro como paisaxe: branco e negro, forma e silencio. Retrato de estudo e de autor para artistas, profesionais e proxectos persoais.",
+        "en": "The face as landscape: black and white, form and silence. Studio and author portraits for artists, professionals and personal projects."
+      },
+      "photos": ["retrato-15.jpg","retrato-01.jpg","retrato-02.jpg","retrato-03.jpg","retrato-04.jpg","retrato-05.jpg","retrato-06.jpg","retrato-07.jpg","retrato-08.jpg","retrato-09.jpg","retrato-10.jpg","retrato-11.jpg","retrato-12.jpg","retrato-13.jpg","retrato-14.jpg"]
+    }
+  ],
+  "about": {
+    "image": "assets/agustin.jpg",
+    "title": { "es": "Donde se cruzan <i>imagen y emoción</i>", "gl": "Onde se cruzan <i>imaxe e emoción</i>", "en": "Where image <i>meets emotion</i>" },
+    "p1": {
+      "es": "Soy <strong>Agustín Segura Prado</strong>, comunicador audiovisual y fotógrafo afincado en Galicia. Trabajo en el punto exacto en el que la imagen se vuelve emoción: del directo de un concierto a la calma de un retrato de estudio, pasando por el reportaje de eventos y la fotografía más conceptual.",
+      "gl": "Son <strong>Agustín Segura Prado</strong>, comunicador audiovisual e fotógrafo afincado en Galicia. Traballo no punto exacto no que a imaxe se volve emoción: do directo dun concerto á calma dun retrato de estudo, pasando pola reportaxe de eventos e a fotografía máis conceptual.",
+      "en": "I'm <strong>Agustín Segura Prado</strong>, an audiovisual communicator and photographer based in Galicia. I work at the exact point where an image turns into emotion: from a live concert to the calm of a studio portrait, through event reportage and more conceptual photography."
+    },
+    "p2": {
+      "es": "Grabo, dirijo y monto piezas audiovisuales —de reels para redes sociales a vídeos de proyecto— buscando siempre que la luz, el ritmo y el montaje cuenten algo. Colaboro con marcas, artistas, productoras y entidades que necesitan contar algo con imagen y vídeo de nivel profesional. Con base en Galicia y disponible para desplazamientos.",
+      "gl": "Gravo, dirixo e monto pezas audiovisuais —de reels para redes sociais a vídeos de proxecto— buscando sempre que a luz, o ritmo e a montaxe conten algo. Colaboro con marcas, artistas, produtoras e entidades que precisan contar algo con imaxe e vídeo de nivel profesional. Con base en Galicia e dispoñible para desprazamentos.",
+      "en": "I shoot, direct and edit audiovisual pieces —from social reels to project videos— always making light, rhythm and editing tell something. I work with brands, artists, production companies and organisations that need to tell a story with professional image and video. Based in Galicia and available to travel."
+    },
+    "chips": {
+      "es": ["Fotografía de concierto","Reportaje de eventos","Retrato de estudio y autor","Foto fija y dirección de arte","Grabación, dirección y montaje"],
+      "gl": ["Fotografía de concerto","Reportaxe de eventos","Retrato de estudo e autor","Foto fixa e dirección de arte","Gravación, dirección e montaxe"],
+      "en": ["Concert photography","Event reportage","Studio & author portrait","Stills & art direction","Shooting, direction & editing"]
+    }
+  },
+  "contact": {
+    "title": {
+      "es": "¿Tienes un proyecto<br><i>en mente?</i> Hablemos.",
+      "gl": "Tes un proxecto<br><i>en mente?</i> Falemos.",
+      "en": "Got a project<br><i>in mind?</i> Let's talk."
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Agustín Segura Prado — Comunicador audiovisual y fotógrafo",
+  "short_name": "Agustín Segura",
+  "description": "Portfolio de fotografía y vídeo de Agustín Segura Prado (Galicia): concierto, eventos, retrato, foto fija y producción audiovisual.",
+  "lang": "es-ES",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0d14",
+  "theme_color": "#0a0d14",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

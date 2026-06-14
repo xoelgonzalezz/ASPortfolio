@@ -1,0 +1,25 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.vscode/
+.idea/
+.vercel/
+
+# artefactos del pipeline de imágenes (no son del sitio)
+download.ps1
+download-full.ps1
+fonts.ps1
+assets-prod.ps1
+make-caballito.ps1
+assets/manifest.json
+assets/manifest-full.json
+# imágenes originales con nombre de descarga (ya copiadas a caballito.png / agustin.jpg)
+assets/687485084_18078435386397526_3493563861983949578_n.jpg
+assets/1756418167268.jpg
+
+# herramientas de Claude (no son del sitio)
+.claude/
+make-icons.ps1

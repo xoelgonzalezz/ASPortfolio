@@ -330,6 +330,48 @@
   navScrim.addEventListener("click", closeMenu);
   document.addEventListener("keydown", (e) => { if (!navLinks.classList.contains("open")) return; if (e.key === "Escape") { closeMenu(); navToggle.focus(); } else trapTab(e, navLinks); });
 
+  /* ---------- navegación interna robusta ----------
+     Las imágenes lazy de las galerías cargan mientras se baja y desplazan el destino,
+     así que el scroll nativo se queda corto. Este scroll "persigue" la posición real
+     del ancla hasta que el layout se asienta (y se cancela si el usuario scrollea). */
+  function anchorScroll(hash) {
+    const id = hash && hash.charAt(0) === "#" ? hash.slice(1) : "";
+    const toTop = !id || id === "inicio";
+    const el = id ? document.getElementById(id) : null;
+    if (!el && !toTop) return false;
+    const off = (nav && nav.offsetHeight ? nav.offsetHeight : 70) + 6;
+    const targetY = () => toTop ? 0 : Math.max(0, el.getBoundingClientRect().top + (window.pageYOffset || window.scrollY) - off);
+    let cancelled = false, n = 0, prev = -1, stable = 0;
+    const stop = () => { cancelled = true; window.removeEventListener("wheel", onUser); window.removeEventListener("touchmove", onUser); window.removeEventListener("keydown", onUserKey); };
+    const onUser = () => stop();
+    const onUserKey = (e) => { if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].indexOf(e.key) >= 0) stop(); };
+    window.addEventListener("wheel", onUser, { passive: true });
+    window.addEventListener("touchmove", onUser, { passive: true });
+    window.addEventListener("keydown", onUserKey);
+    window.scrollTo({ top: targetY(), behavior: "smooth" });
+    const tick = () => {
+      if (cancelled) return;
+      const y = targetY();
+      if (Math.abs(y - prev) <= 1 && Math.abs((window.pageYOffset || window.scrollY) - y) <= 3) { if (++stable >= 2) return stop(); }
+      else { stable = 0; window.scrollTo({ top: y, behavior: "smooth" }); }
+      prev = y; n++;
+      if (n < 16) setTimeout(tick, 230); else stop();
+    };
+    setTimeout(tick, 420);
+    return true;
+  }
+  document.addEventListener("click", (e) => {
+    const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (href.charAt(0) !== "#") return;
+    if (href.length > 1 && href !== "#inicio" && !document.getElementById(href.slice(1))) return;
+    e.preventDefault();
+    if (navLinks && navLinks.classList.contains("open")) closeMenu();
+    anchorScroll(href);
+    if (href.length > 1) { try { history.replaceState(null, "", href); } catch (x) {} }
+  });
+
   /* ---------- varios ---------- */
   (function detectLogo() { const i = new Image(); i.onload = () => { if (i.naturalWidth > 1) document.body.classList.add("has-logo"); }; i.src = "assets/caballito.png"; })();
   const yearEl = $("#year"); if (yearEl) yearEl.textContent = new Date().getFullYear();

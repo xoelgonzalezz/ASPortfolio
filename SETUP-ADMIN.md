@@ -34,9 +34,12 @@ En Vercel → proyecto `as-portfolio` → **Settings → Environment Variables**
 
 | Nombre | Valor |
 |---|---|
-| `ADMIN_PASSWORD` | la contraseña que tendrá Agustín |
+| `ADMIN_PASSWORD` | la contraseña de Agustín — **larga y robusta** (no hay segundo factor; p.ej. 4 palabras al azar o `openssl rand -base64 18`) |
 | `SESSION_SECRET` | una cadena larga al azar (genera una con `openssl rand -hex 48`) |
 | `BLOB_READ_WRITE_TOKEN` | lo añade solo el paso 1 |
+| `SESSION_GENERATION` | *(opcional)* un número, p.ej. `1`. Súbelo (`2`, `3`…) para **cerrar todas las sesiones** de golpe |
+
+> **Seguridad:** la sesión dura 2 días y la cookie es `HttpOnly` + `Secure` + `SameSite=Strict`. «Cerrar sesión» borra la cookie del navegador; para revocar una sesión que se sospeche filtrada, cambia `SESSION_GENERATION`. Tras el primer deploy nuevo, en GitHub elimina la antigua *OAuth App* y borra de Vercel las variables `OAUTH_GITHUB_CLIENT_ID`/`OAUTH_GITHUB_CLIENT_SECRET` (ya no se usan).
 
 ### 3) Redeploy
 **Deployments → (último) → ⋯ → Redeploy** (sin caché). En el primer deploy Vercel instalará `@vercel/blob`.

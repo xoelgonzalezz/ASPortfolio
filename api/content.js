@@ -11,10 +11,19 @@ module.exports = async (req, res) => {
   if (req.method === "GET") {
     res.setHeader("Cache-Control", "no-store");
     if (req.query && req.query.__diag === "1") {
+      const crypto = require("crypto");
       const tok = process.env.BLOB_READ_WRITE_TOKEN || "";
-      const out = { storePrefix: (tok.match(/vercel_blob_rw_[A-Za-z0-9]+/) || ["NONE"])[0], tokenLen: tok.length, blobLoaded: false, listCount: null, derr: null };
-      try { const { list } = await import("@vercel/blob"); out.blobLoaded = true; const { blobs } = await list({ prefix: PREFIX }); out.listCount = (blobs || []).length; }
-      catch (e) { out.derr = String((e && e.message) || e); }
+      const out = { storePrefix: (tok.match(/vercel_blob_rw_[A-Za-z0-9]+/) || ["NONE"])[0], tokenLen: tok.length, tokHash: crypto.createHash("sha256").update(tok).digest("hex").slice(0, 12), blobLoaded: false, selfPut: null, listCount: null, selfFetch: null, derr: null };
+      try {
+        const { put, list, del } = await import("@vercel/blob");
+        out.blobLoaded = true;
+        const b = await put(PREFIX + "__diagtest.json", "{}", { access: "public", addRandomSuffix: true, contentType: "application/json" });
+        out.selfPut = "ok";
+        const { blobs } = await list({ prefix: PREFIX });
+        out.listCount = (blobs || []).length;
+        const rr = await fetch(b.url, { cache: "no-store" }); out.selfFetch = rr.status;
+        await del(b.url);
+      } catch (e) { out.derr = String((e && e.message) || e); }
       return J(200, out);
     }
     try {

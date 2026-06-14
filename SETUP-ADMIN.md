@@ -48,7 +48,7 @@ En Vercel → proyecto `as-portfolio` → **Settings → Environment Variables**
 
 ## Cómo edita Agustín
 
-1. Entra en `https://agustinseguraprado.com/admin` (o la URL `.vercel.app/admin`).
+1. Entra en `https://agustinsegura.com/admin` (o la URL `.vercel.app/admin`).
 2. Escribe la **contraseña**.
 3. En el menú lateral:
    - **Portada** — foto de inicio y textos (ES/GL/EN).

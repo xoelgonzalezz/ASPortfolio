@@ -35,7 +35,7 @@ server.js             Servidor estático SOLO para desarrollo (no se despliega).
 
 ## Antes de publicar (importante)
 
-1. **Dominio**: reemplaza `https://www.agustinseguraprado.com/` por el dominio real en:
+1. **Dominio**: reemplaza `https://www.agustinsegura.com/` por el dominio real en:
    `index.html` (canonical, Open Graph, Twitter, JSON-LD), `robots.txt` y `sitemap.xml`.
 2. **El caballito (logo de marca)**: coloca el archivo del caballito en
    `assets/caballito.png` (idealmente PNG cuadrado con fondo transparente, 512×512).

@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /api
 
 # Sustituye el dominio por el definitivo al publicar
-Sitemap: https://agustinseguraprado.com/sitemap.xml
+Sitemap: https://agustinsegura.com/sitemap.xml

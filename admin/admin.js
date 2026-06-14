@@ -110,21 +110,32 @@
   /* ---------- imagen: elegir + reescalar + subir ---------- */
   function downscale(file) {
     return new Promise(function (res, rej) {
+      var done = false;
+      var fail = function (msg) { if (done) return; done = true; clearTimeout(to); rej(new Error(msg)); };
+      // Red de seguridad: si la imagen tarda en decodificar (archivo enorme), no se queda colgada en gris.
+      var to = setTimeout(function () { fail("La imagen es demasiado grande o pesada de procesar. Prueba a exportarla un poco más pequeña."); }, 25000);
       var reader = new FileReader();
       reader.onload = function () {
         var img = new Image();
         img.onload = function () {
-          var w = img.naturalWidth, ht = img.naturalHeight, max = 2560;
-          var s = Math.min(1, max / Math.max(w, ht));
-          w = Math.round(w * s); ht = Math.round(ht * s);
-          var c = document.createElement("canvas"); c.width = w; c.height = ht;
-          c.getContext("2d").drawImage(img, 0, 0, w, ht);
-          res(c.toDataURL("image/jpeg", 0.85));
+          if (done) return; done = true; clearTimeout(to);
+          try {
+            var w = img.naturalWidth, ht = img.naturalHeight, max = 2560;
+            if (!w || !ht) return rej(new Error("No se pudo leer la imagen."));
+            var s = Math.min(1, max / Math.max(w, ht));
+            w = Math.round(w * s); ht = Math.round(ht * s);
+            var c = document.createElement("canvas"); c.width = w; c.height = ht;
+            c.getContext("2d").drawImage(img, 0, 0, w, ht);
+            // Mantiene la resolución (2560px); baja solo la CALIDAD si hace falta para no
+            // superar el límite de ~4,5 MB del cuerpo de petición de Vercel (imperceptible en web).
+            // Blob binario a calidad completa (sin base64): se sube directo al Blob, sin límite de tamaño.
+            c.toBlob(function (b) { if (b) res(b); else rej(new Error("No se pudo procesar la imagen.")); }, "image/jpeg", 0.85);
+          } catch (e) { rej(new Error("No se pudo procesar la imagen.")); }
         };
-        img.onerror = function () { rej(new Error("No se pudo procesar la imagen")); };
+        img.onerror = function () { fail("Formato no compatible. Usa JPG o PNG. (Las fotos HEIC del iPhone hay que exportarlas como JPG primero.)"); };
         img.src = reader.result;
       };
-      reader.onerror = function () { rej(new Error("No se pudo leer el archivo")); };
+      reader.onerror = function () { fail("No se pudo leer el archivo."); };
       reader.readAsDataURL(file);
     });
   }
@@ -136,11 +147,13 @@
       if (!f) return;
       try {
         busy(true, "Procesando foto…");
-        var dataUrl = await downscale(f);
+        var blob = await downscale(f);
         busy(true, "Subiendo…");
-        var r = await apiJSON("/api/upload", "POST", { dataUrl: dataUrl, filename: f.name });
-        cb(r.url);
-      } catch (e) { toast(e.message || "No se pudo subir", "err"); }
+        var mod = await import("https://esm.sh/@vercel/blob@2.4.0/client");
+        var base = String(f.name || "foto").replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 40) || "foto";
+        var result = await mod.upload("fotos/" + base + ".jpg", blob, { access: "public", handleUploadUrl: "/api/upload", contentType: "image/jpeg" });
+        cb(result.url);
+      } catch (e) { toast(e.message || "No se pudo subir la foto", "err"); }
       finally { busy(false); }
     });
     inp.click();

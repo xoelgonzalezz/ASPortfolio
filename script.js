@@ -31,6 +31,15 @@
   function isPath(f) { return /[\/]/.test(f); }
   function thumbCandidates(f) { return isPath(f) ? [f] : ["assets/thumbs/" + f, "assets/full/" + f, "assets/uploads/" + f]; }
   function fullCandidates(f) { return isPath(f) ? [f] : ["assets/full/" + f, "assets/uploads/" + f, "assets/thumbs/" + f]; }
+  /* precarga de la imagen a tamaño COMPLETO (misma resolución, solo adelanta la descarga al caché) */
+  const _pf = Object.create(null);
+  function prefetchFull(cands, priority) {
+    const key = cands && cands[0]; if (!key || _pf[key]) return;
+    const im = new Image(); _pf[key] = im;
+    try { im.fetchPriority = priority || "low"; } catch (e) {}
+    im.decoding = "async";
+    im.src = key;
+  }
   function chainSrc(img, cands, onload) {
     let i = 0;
     img.onerror = () => { i++; if (i < cands.length) img.src = cands[i]; else { img.onerror = null; } };
@@ -138,6 +147,12 @@
       const open = () => openLightbox(sec.id, i);
       fig.addEventListener("click", open);
       fig.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+      // al apuntar/tocar/enfocar una miniatura, adelanta la descarga de su versión completa
+      let _pfo = false;
+      const pf = () => { if (_pfo) return; _pfo = true; prefetchFull(fullCandidates(file), "low"); };
+      fig.addEventListener("pointerenter", pf);
+      fig.addEventListener("touchstart", pf, { passive: true });
+      fig.addEventListener("focus", pf);
       revealObs.observe(fig);
     });
     lightboxSets[sec.id] = set;
@@ -261,8 +276,12 @@
     const done = (ok) => { if (curFull === full && lightboxSets[curCat] && lightboxSets[curCat][curIndex] === item) { if (ok) chainSrc(lbImg, item.full); lbImg.classList.remove("blur"); lbSpinner.classList.remove("show"); } };
     full.onload = () => done(true);
     full.onerror = () => { fi++; if (fi < item.full.length) { full.src = item.full[fi]; } else done(false); };
+    try { full.fetchPriority = "high"; } catch (e) {}
+    full.decoding = "async";
     full.src = item.full[0];
-    const nxt = set[(curIndex + 1) % set.length]; if (nxt) { const p = new Image(); p.src = nxt.thumb[0]; }
+    // adelanta a tamaño completo la siguiente y la anterior para navegar sin esperas
+    const nxt = set[(curIndex + 1) % set.length]; if (nxt) prefetchFull(nxt.full, "low");
+    const prv = set[(curIndex - 1 + set.length) % set.length]; if (prv) prefetchFull(prv.full, "low");
   }
   function openLightbox(cat, i) {
     if (!lightboxSets[cat] || !lightboxSets[cat][i]) return;
